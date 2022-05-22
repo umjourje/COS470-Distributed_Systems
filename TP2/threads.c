@@ -63,6 +63,7 @@ void* soma_multiplos(void *args) {
        //printf("indice %i valor %i\n", offset + i, valores[offset + i]);
    }
    lock_errado(soma);
+   // lock_certo(soma);
 }
 
 int main(int argc, char* argv[]) {
