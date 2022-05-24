@@ -12,6 +12,7 @@ const int M = 10000; //10^5
 // const int Np = 1;
 // const int Nc = 1;
 
+sem_t mutexCounter;
 sem_t mutex;
 sem_t empty;
 sem_t full;
@@ -53,25 +54,39 @@ void* produtor (void* args) {
         sem_post(&mutex); // libera semaforo
         sem_post(&full);
     }
+
+    sem_post(&mutex);
+    sem_post(&empty);
+    sem_post(&full);
+
+    pthread_exit(NULL);
+
 }
 
 void* consumidor (void* args) {
     int i;
+
     while (contador > 0) {
         sem_wait(&full);
         sem_wait(&mutex); // lock no semaforo de Leitura
             position--;
             int temp = BUFFER[position];
+
         sem_post(&mutex); // libera semaforo de Leitura
         sem_post(&empty);
-
         if (check_prime(temp)) {
             // printf("%i É primo!\n", temp);
-            contador = contador-1;
+            sem_wait(&mutexCounter);
+                contador = contador-1;
+            sem_post(&mutexCounter);
         };
+
     };
     sem_post(&mutex);
     sem_post(&empty);
+    sem_post(&full);
+
+    pthread_exit(NULL);
 }
 
 
@@ -84,20 +99,21 @@ int main(int argc, char* argv[]) {
     pthread_t tp[Np];
     pthread_t tc[Nc];
     sem_init(&mutex, 0, 1);
+    sem_init(&mutexCounter, 0, 1);
     sem_init(&empty, 0, N);
     sem_init(&full, 0, 0);
     t = clock();
     
     //Loop Criação Produtor
     for(int i = 0; i < Np; i++) {
-        int params = 0;
-        pthread_create(&tp[i], NULL, &produtor, &params);
+        int params = i;
+        pthread_create(&tp[i], NULL, &produtor, &i);
     }
 
     //Loop Criação Consumidor
     for(int i = 0; i < Nc; i++) {
-        int params = 0;
-        pthread_create(&tc[i], NULL, &consumidor, &params);
+        int params = i;
+        pthread_create(&tc[i], NULL, &consumidor, &i);
     }
 
     // Join Produtor

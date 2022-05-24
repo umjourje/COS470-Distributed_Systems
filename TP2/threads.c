@@ -8,11 +8,11 @@
 //gcc -o threads threads.c -pthread
 //./threads
 
-const int K = 2; //Número de threads paralelas. Deve ser divisor de N/2
+const int K = 1; //Número de threads paralelas. Deve ser divisor de N/2
 //const int N = 100;
 //const int N = 10000000; //10^7
-const int N = 10000000; //10^8
-//const int N = 10000000; //10^9
+//const int N = 10000000; //10^8
+const int N = 100000000; //10^9
 
 
 long resultado = 0;
@@ -72,8 +72,8 @@ int main(int argc, char* argv[]) {
 
     //Gera os números a serem somados
     for(long i = 0; i < N; i++) {
-        valores[i] = (char) (rand() % 200) - 100;
-        //valores[i] = (char) 1; //Debug
+        //valores[i] = (char) (rand() % 200) - 100;
+        valores[i] = (char) 1; //Debug
     }
 
     pthread_t th[K];
