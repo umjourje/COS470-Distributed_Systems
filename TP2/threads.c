@@ -7,12 +7,12 @@
 
 //gcc -o threads threads.c -pthread
 //./threads
-
-const int K = 1; //Número de threads paralelas. Deve ser divisor de N/2
+// K= 1, 2,4,8,16,32,64,128,256
+int K; // = 2; //Número de threads paralelas. Deve ser divisor de N/2
 //const int N = 100;
-//const int N = 10000000; //10^7
-//const int N = 10000000; //10^8
-const int N = 100000000; //10^9
+int N; // = 10000000; //10^7
+// const int N = 10000000; //10^8
+// const int N = 100000000; //10^9
 
 
 long resultado = 0;
@@ -56,7 +56,7 @@ void* soma_multiplos(void *args) {
    long offset = tamanho * index;
 
    long soma = 0;
-   printf("Thread started witn index n: %i\n", index);
+    //    printf("Thread started witn index n: %i\n", index);
 
    for(long i = 0; i < tamanho; i++) {
        soma = soma + valores[offset + i];
@@ -67,6 +67,9 @@ void* soma_multiplos(void *args) {
 }
 
 int main(int argc, char* argv[]) {
+
+    int N = atoi(argv[1]);
+    int K = atoi(argv[2]);
 
     valores = malloc(N);
 
@@ -80,6 +83,7 @@ int main(int argc, char* argv[]) {
     clock_t t;
     t = clock();
 
+    printf("N,K: %i, %i\n", N, K);
     //Main loop
     for(int i = 0; i < K; i++) {
         pthread_create(&th[i], NULL, &soma_multiplos, &i);
@@ -92,7 +96,7 @@ int main(int argc, char* argv[]) {
     t = clock() - t;
     double time_taken = ((double)t)/CLOCKS_PER_SEC; // ms
     printf("Tempo para calcular: %f ms\n", time_taken * 1000);
-    printf("Valor total: %i\n", resultado);
+    // printf("Valor total: %i\n", resultado);
 
     return 0;
 }
