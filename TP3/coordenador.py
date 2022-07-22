@@ -25,7 +25,6 @@ def multi_threaded_client(connection, processo):
     aguardaFila = True
     #while (int(fila.queue[0]) != int(processo)):
     while(aguardaFila):
-        time.sleep(0.01)
         mutexQueue.acquire()
         if(int(fila.queue[0]) == int(processo)):
             #Se for o próximo, adquire lock da fila e da run
@@ -36,9 +35,7 @@ def multi_threaded_client(connection, processo):
         #pass
         #Libera a fila
         mutexQueue.release()
-
-
-    
+        time.sleep(0.01)
 
 
     #Envia a mensagem de GRANT para o processo
@@ -97,7 +94,7 @@ class Listener(Thread):
                 if data:
                     #Pega os dados da comunicação
                     timer = data[0]
-                    processo = data[2:3]
+                    processo = data[2:4]
                     mutexLog.acquire()
                     with open("log.txt", "a") as f:
                         #f.write("Received connection request from process: " + str(processo) + " with time " + str(timer) + "\n")

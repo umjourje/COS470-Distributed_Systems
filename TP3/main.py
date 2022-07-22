@@ -10,9 +10,9 @@ from log_validator import validate
 if __name__ == "__main__":
     import time
     from multiprocessing import Pool
-    repetitions = 5     # r
-    n = 4
-    k = 1
+    repetitions = 3     # r
+    n = 16
+    k = 0
     pedidos = [0 for _ in range(n)]
 
     start_time = time.time()
