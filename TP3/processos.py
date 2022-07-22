@@ -25,7 +25,7 @@ class Client():
             s = socket.socket()
             s.connect((TCP_IP, TCP_PORT))
             #print(i)
-            message = f"{i}|{id}|{number}".encode('utf-8')
+            message = f"{1}|{id:03d}|{number}".encode('utf-8')
             s.sendall(message)
             waitAnswer = True
 
@@ -36,16 +36,16 @@ class Client():
                         #print(reply)
                         with open("resultado.txt", "a") as f:
                             now = current_milli_time()
-                            f.write(f"|{id:03d}|{now}\n")
+                            f.write(f"|{id}|{now}\n")
 
                         #time.sleep(random.randrange(10))
                         time.sleep(self.k)
                         time.sleep(0.01)
+
                         s.send(f"RL".encode('utf-8'))
                         waitAnswer = False
 
                 except Exception:
                     break
-                time.sleep(0.01)
             s.close()
 

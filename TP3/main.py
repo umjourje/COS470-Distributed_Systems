@@ -11,7 +11,7 @@ if __name__ == "__main__":
     import time
     from multiprocessing import Pool
     repetitions = 3     # r
-    n = 16
+    n = 32
     k = 0
     pedidos = [0 for _ in range(n)]
 
